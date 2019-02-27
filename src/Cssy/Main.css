@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.mainContainer {
+    display: flex;
+    justify-content: center;
+    background: black;
+}
+
+.main {
+    font-size: 40px;
+    width: 750px;
+    color: black;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+.main span {
+    color: #748ED2;
+}

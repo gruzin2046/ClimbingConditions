@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.formContainer {
+    display: flex;
+    justify-content: center;
+    background: white;
+}
+
+.form {
+    font-size: 40px;
+    width: 750px;
+    color: white;
+    background-color: black;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.inp {
+    width: 550px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 35px;
+}

@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.headerConatiner {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background: black;
+}
+
+.header {
+    width: 1200px;
+    font-size: 100px;
+    display: flex;
+
+}
+
+#logo {
+    background-color: black;
+    width: 750px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    text-align: center;
+}
+
+#logo span {
+    color: #748ED2;
+}
