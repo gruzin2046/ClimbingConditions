@@ -11,6 +11,12 @@
     background: white;
 }
 
+.formList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .form {
     font-size: 40px;
     width: 750px;
@@ -26,4 +32,15 @@
     width: 550px;
     font-family: 'Roboto', sans-serif;
     font-size: 35px;
+}
+
+.formList button {
+    font-size: 40px;
+    width: 750px;
+    color: #748ED2;
+    background-color: black;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    padding: 10px 0;
 }
