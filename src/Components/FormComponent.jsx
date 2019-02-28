@@ -7,6 +7,7 @@ export default class FormComponent extends Component {
         this.state = {
             class: 'visible',
             class1: 'hidden',
+            classError: 'hidden',
             place: 'Zielona Góra',
             date: '2019-02-28T12:00',
             cityLat: '',
@@ -31,13 +32,105 @@ export default class FormComponent extends Component {
             currTempInfo: '',
             currHum: '',
             currHumInfo: '',
+
+            arayResult: [],
+            arrayDesc: []
         }
     }
 
-    hideForm = event => {
+    conditionCalc = () => {
+
+        setTimeout(() => {
+
+            if (this.state.precipIntencityTwo === 2) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, 2],
+                    arrayDesc: [...this.state.arrayDesc, 'padało dwa dni wcześniej']
+                });
+            }
+
+            if (this.state.precipIntencityTwo === 4) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, 4],
+                    arrayDesc: [...this.state.arrayDesc, 'lało dwa dni wcześniej']
+                });
+            }
+
+            if (this.state.precipIntencityOne === 2) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, 4],
+                    arrayDesc: [...this.state.arrayDesc, 'padało dzień wczesniej']
+                });
+            }
+
+            if (this.state.precipIntencityOne === 4) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, 6],
+                    arrayDesc: [...this.state.arrayDesc, 'lało dzień wcześniej']
+                });
+            }
+
+            if (this.state.precipIntencityTwo >= 2 && this.state.precipIntencityOne === 0 && (this.state.windSpeedOne <= -2 || this.state.windSpeedSureOne <= -4)) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, -2],
+                    arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej wiatr szuszył skały']
+                });
+            }
+
+            if (this.state.precipIntencityTwo >= 2 && this.state.precipIntencityOne === 0 && (this.state.windSpeedOne <= -4 || this.state.windSpeedSureOne <= -4)) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, -2],
+                    arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej wiatr mocno szuszył skały']
+                });
+            }
+
+            if (this.state.precipIntencityOne >= 2 && (this.state.windSpeed <= -2 || this.state.windSpeedSure <= -4)) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, -2],
+                    arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr szuszy skały']
+                });
+            }
+
+            if (this.state.precipIntencityOne >= 2 && (this.state.windSpeed === -4 || this.state.windSpeedSure <= -4)) {
+                this.setState({
+                    arayResult: [...this.state.arayResult, -2],
+                    arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr mocno szuszy skały']
+                });
+            }
+
+            //current conditions
+
+            if ((this.state.precipIntencity + this.state.precipSureNorm + this.state.precipSureHard) >= 6) {
+                this.setState({
+                    windSpeed: 0,
+                    windSpeedSure: 0,
+                    currTemp: 0,
+                });
+            }
+
+            this.setState({
+                arayResult: [...this.state.arayResult, this.state.precipIntencity, this.state.precipSureNorm, this.state.precipSureHard, this.state.windSpeed, this.state.windSpeedSure, this.state.currTemp, this.state.currHum],
+                arrayDesc: [...this.state.arrayDesc, this.state.precipIntencityInfo, this.state.precipSureNormInfo, this.state.precipSureHardInfo, this.state.windSpeedInfo, this.state.windSpeedSureInfo, this.state.currTempInfo, this.state.currHumInfo]
+            });
+
+            console.log('wyniki: ', this.state.arayResult)
+            console.log('opisy: ', this.state.arrayDesc)
+
+        }, 1000);
+    }
+
+    hideForm = () => {
         this.setState({
             class: 'hidden',
             class1: 'visible'
+        });
+    }
+
+    showForm = () => {
+        this.setState({
+            class: 'visible',
+            class1: 'hidden',
+            classError: 'hidden'
         });
     }
 
@@ -62,14 +155,18 @@ export default class FormComponent extends Component {
                 cityLat: `${obj.hits[0].point.lat}`,
                 cityLon: `${obj.hits[0].point.lng}`,
             }, () => {
-                //this.fetchPastWeatherTwoDayAgo(event)
-                //this.fetchPastWeatherOneDayAgo(event)
+                this.fetchPastWeatherTwoDayAgo(event)
+                this.fetchPastWeatherOneDayAgo(event)
                 this.fetchWeather(event)
             })
             // console.log(this.state.cityLat)
             // console.log(this.state.cityLon)
         }).catch(err => {
             console.log(err)
+            this.setState({
+                class1: 'hidden',
+                classError: 'visible'
+            });
         })
     }
 
@@ -78,7 +175,7 @@ export default class FormComponent extends Component {
         const searchDateNumber = Math.round(searchDate.getTime() / 1000) - 172800
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
         fetch(url).then(r => r.json()).then(obj => {
-            console.log('dwa dni wcześniej', obj)
+            //console.log('dwa dni wcześniej', obj)
             const precipIntencityArray = []
             for (let i = 0; i < 24; i++) {
                 if (obj.hourly.data[i].precipIntencity > 0.25) {
@@ -93,12 +190,12 @@ export default class FormComponent extends Component {
             }
             else if (precipIntencityArray.length > 0 && precipIntencityArray.length < 4) {
                 this.setState({
-                    precipIntencityTwo: 0.5
+                    precipIntencityTwo: 2
                 })
             }
             else {
                 this.setState({
-                    precipIntencityTwo: 1
+                    precipIntencityTwo: 4
                 })
             }
             console.log('wartość dla opadów, dwa dni wcześniej', this.state.precipIntencityTwo)
@@ -113,7 +210,7 @@ export default class FormComponent extends Component {
         const searchDateNumber = Math.round(searchDate.getTime() / 1000) - 86400
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
         fetch(url).then(r => r.json()).then(obj => {
-            console.log('dzień wcześniej', obj)
+            //console.log('dzień wcześniej', obj)
             const precipIntencityArray = []
             for (let i = 0; i < 24; i++) {
                 if (obj.hourly.data[i].precipIntencity > 0.25) {
@@ -128,12 +225,12 @@ export default class FormComponent extends Component {
             }
             else if (precipIntencityArray.length > 0 && precipIntencityArray.length < 4) {
                 this.setState({
-                    precipIntencityOne: 1
+                    precipIntencityOne: 2
                 })
             }
             else {
                 this.setState({
-                    precipIntencityOne: 2
+                    precipIntencityOne: 4
                 })
             }
             console.log('wartość opadów', this.state.precipIntencityOne)
@@ -186,12 +283,12 @@ export default class FormComponent extends Component {
             }
             console.log('wartość dla silnego wiatru, dzień wcześniej', this.state.windSpeedSureOne)
 
+            this.conditionCalc();
+
         }).catch(err => {
             console.log(err)
         })
     }
-
-
 
     fetchWeather = event => {
         const searchDate = new Date(this.state.date)
@@ -222,7 +319,7 @@ export default class FormComponent extends Component {
             }
             else {
                 this.setState({
-                    precipIntencity: 4,
+                    precipIntencity: 6,
                     precipIntencityInfo: 'częste drobne opady',
                 })
             }
@@ -326,13 +423,13 @@ export default class FormComponent extends Component {
             }
             else if (windSpeedSureArray.length > 0 && windSpeedSureArray.length < 4) {
                 this.setState({
-                    windSpeedSure: -2,
+                    windSpeedSure: -4,
                     windSpeedSureInfo: "momentami bardzo wietrznie"
                 })
             }
             else {
                 this.setState({
-                    windSpeedSure: -6,
+                    windSpeedSure: -8,
                     windSpeedSureInfo: "bardzo wietrznie"
                 })
             }
@@ -342,42 +439,42 @@ export default class FormComponent extends Component {
 
             if (obj.currently.temperature < 41) {
                 this.setState({
-                    currTemp: 5,
+                    currTemp: 2,
                     currTempInfo: "bardzo zimno (mniej niż 5 stopni)"
                 })
             }
 
             else if (obj.currently.temperature > 41 && obj.currently.temperature < 50) {
                 this.setState({
-                    currTemp: 2,
+                    currTemp: 0,
                     currTempInfo: "zimno (5 - 10 stopni)"
                 })
             }
 
             else if (obj.currently.temperature > 50 && obj.currently.temperature < 53.6) {
                 this.setState({
-                    currTemp: 0,
+                    currTemp: -2,
                     currTempInfo: "temperatura może być (10 - 12,5 stopni)"
                 })
             }
 
             else if (obj.currently.temperature > 53.6 && obj.currently.temperature < 57.2) {
                 this.setState({
-                    currTemp: -2,
+                    currTemp: -6,
                     currTempInfo: "temperatura dobra (12,5 - 14 stopni)"
                 })
             }
 
             else if (obj.currently.temperature > 57.2 && obj.currently.temperature < 60.8) {
                 this.setState({
-                    currTemp: -5,
+                    currTemp: -10,
                     currTempInfo: "temperatura idealna (14 - 16 stopni)"
                 })
             }
 
             else if (obj.currently.temperature > 60.8 && obj.currently.temperature < 62.6) {
                 this.setState({
-                    currTemp: -2,
+                    currTemp: -4,
                     currTempInfo: "temperatura dobra (16 - 17,5 stopni)"
                 })
             }
@@ -391,14 +488,14 @@ export default class FormComponent extends Component {
 
             else if (obj.currently.temperature > 68 && obj.currently.temperature < 71.6) {
                 this.setState({
-                    currTemp: 2,
+                    currTemp: 4,
                     currTempInfo: "ciepło (20 - 22,5 stopni)"
                 })
             }
 
             else {
                 this.setState({
-                    currTemp: 5,
+                    currTemp: 10,
                     currTempInfo: "gorąco (więcej niż 22,5 stopni)"
                 })
             }
@@ -410,7 +507,7 @@ export default class FormComponent extends Component {
 
             if (obj.currently.humidity < 0.3) {
                 this.setState({
-                    currHum: -2,
+                    currHum: -4,
                     currHumInfo: "niska wilgotność powietrza"
                 })
             }
@@ -424,7 +521,7 @@ export default class FormComponent extends Component {
 
             else {
                 this.setState({
-                    currHum: 2,
+                    currHum: 4,
                     currHumInfo: "wysoka wilgotność powietrza"
                 })
             }
@@ -451,40 +548,65 @@ export default class FormComponent extends Component {
 
 
         return (
-            <div className={this.state.class}>
-                <nav className='formContainer'>
-                    <div className='formList'>
-                        <form className='form'>
-                            <div>Gdzie?</div>
-                            <input
-                                className="inp"
-                                type="text"
-                                name="place"
-                                value={this.state.place}
-                                onChange={this.changeHandlerPlace}
-                                placeholder='nazwa najbliższej miejscowości'
-                            />
-                        </form>
-                        <form className='form'>
-                            <div>Kiedy?</div>
-                            <input
-                                className="inp"
-                                type="datetime-local"
-                                value={this.state.date}
-                                // min="2019-02-25T00:00"
-                                // max="2019-02-28T00:00"
-                                name="date"
-                                onChange={this.changeHandlerDate}
-                            />
-                        </form>
-                        <button onClick={(e) => {
-                            this.fetchLocation(e)
-                            this.hideForm()
-                        }
-                        }>SPRAWDŹ!</button>
-                    </div>
-                </nav>
-            </div>
+            <div>
+                <div className={this.state.class}>
+                    <nav className='formContainer'>
+                        <div className='formList'>
+                            <form className='form'>
+                                <div>Gdzie?</div>
+                                <input
+                                    className="inp"
+                                    type="text"
+                                    name="place"
+                                    value={this.state.place}
+                                    onChange={this.changeHandlerPlace}
+                                    placeholder='nazwa najbliższej miejscowości'
+                                />
+                            </form>
+                            <form className='form'>
+                                <div>Kiedy?</div>
+                                <input
+                                    className="inp"
+                                    type="datetime-local"
+                                    value={this.state.date}
+                                    // min="2019-02-25T00:00"
+                                    // max="2019-02-28T00:00"
+                                    name="date"
+                                    onChange={this.changeHandlerDate}
+                                />
+                            </form>
+                            <button onClick={(e) => {
+                                this.fetchLocation(e)
+                                this.hideForm()
+                            }
+                            }>SPRAWDŹ!</button>
+                        </div>
+                    </nav>
+                </div>
+                <div className={this.state.class1}>
+                    <nav className='formContainer'>
+                        <div className='formList'>
+                            <div className='form'>
+                                <p>tutaj</p>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div className={this.state.classError}>
+                    <nav className='formContainer'>
+                        <div className='formList'>
+                            <div className='formErr'>
+                                <p className='blue'>Twoje zapytanie nie jest prawidłowe.</p>
+                                <p>{'Jeśli nie umiesz pisać lub (co gorsza) nie myślisz - wróć do szkoły.'}</p>
+                            </div>
+                            <button onClick={(e) => {
+                                this.showForm()
+                            }
+                            }>POWRÓT</button>
+                        </div>
+                    </nav>
+                </div>
+            </div >
         );
     }
 }
