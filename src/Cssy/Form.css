@@ -44,3 +44,11 @@
     text-align: center;
     padding: 10px 0;
 }
+
+.visible {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
