@@ -6,20 +6,22 @@ export default class FormComponent extends Component {
         super(props);
         this.state = {
             class: 'visible',
-            class1: 'hidden',
+            classWait: 'hidden',
             classError: 'hidden',
-            place: 'Zielona Góra',
-            date: '2019-02-28T12:00',
+            classError2: 'hidden',
+            classResponse: 'hidden',
+            place: 'Reykjavik',
+            date: '2019-03-01T12:00',
             cityLat: '',
             cityLon: '',
-            precipIntencityTwo: '',
+            precipIntensityTwo: '',
 
-            precipIntencityOne: '',
+            precipIntensityOne: '',
             windSpeedOne: '',
             windSpeedSureOne: '',
 
-            precipIntencity: '',
-            precipIntencityInfo: '',
+            precipIntensity: '',
+            precipIntensityInfo: '',
             precipSureNorm: '',
             precipSureNormInfo: '',
             precipSurehard: '',
@@ -34,7 +36,11 @@ export default class FormComponent extends Component {
             currHumInfo: '',
 
             arayResult: [],
-            arrayDesc: []
+            arrayDesc: [],
+            respNumber: 0,
+            condStatus: "",
+            condDesc: "",
+            lis: ""
         }
     }
 
@@ -42,56 +48,56 @@ export default class FormComponent extends Component {
 
         setTimeout(() => {
 
-            if (this.state.precipIntencityTwo === 2) {
+            if (this.state.precipIntensityTwo === 2) {
                 this.setState({
                     arayResult: [...this.state.arayResult, 2],
                     arrayDesc: [...this.state.arrayDesc, 'padało dwa dni wcześniej']
                 });
             }
 
-            if (this.state.precipIntencityTwo === 4) {
+            if (this.state.precipIntensityTwo === 4) {
                 this.setState({
                     arayResult: [...this.state.arayResult, 4],
                     arrayDesc: [...this.state.arrayDesc, 'lało dwa dni wcześniej']
                 });
             }
 
-            if (this.state.precipIntencityOne === 2) {
+            if (this.state.precipIntensityOne === 2) {
                 this.setState({
                     arayResult: [...this.state.arayResult, 4],
                     arrayDesc: [...this.state.arrayDesc, 'padało dzień wczesniej']
                 });
             }
 
-            if (this.state.precipIntencityOne === 4) {
+            if (this.state.precipIntensityOne === 4) {
                 this.setState({
                     arayResult: [...this.state.arayResult, 6],
                     arrayDesc: [...this.state.arrayDesc, 'lało dzień wcześniej']
                 });
             }
 
-            if (this.state.precipIntencityTwo >= 2 && this.state.precipIntencityOne === 0 && (this.state.windSpeedOne <= -2 || this.state.windSpeedSureOne <= -4)) {
+            if (this.state.precipIntensityTwo >= 2 && this.state.precipIntensityOne === 0 && (this.state.windSpeedOne <= -2 || this.state.windSpeedSureOne <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
                     arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej wiatr szuszył skały']
                 });
             }
 
-            if (this.state.precipIntencityTwo >= 2 && this.state.precipIntencityOne === 0 && (this.state.windSpeedOne <= -4 || this.state.windSpeedSureOne <= -4)) {
+            if (this.state.precipIntensityTwo >= 2 && this.state.precipIntensityOne === 0 && (this.state.windSpeedOne <= -4 || this.state.windSpeedSureOne <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
                     arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej wiatr mocno szuszył skały']
                 });
             }
 
-            if (this.state.precipIntencityOne >= 2 && (this.state.windSpeed <= -2 || this.state.windSpeedSure <= -4)) {
+            if (this.state.precipIntensityOne >= 2 && (this.state.windSpeed <= -2 || this.state.windSpeedSure <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
                     arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr szuszy skały']
                 });
             }
 
-            if (this.state.precipIntencityOne >= 2 && (this.state.windSpeed === -4 || this.state.windSpeedSure <= -4)) {
+            if (this.state.precipIntensityOne >= 2 && (this.state.windSpeed === -4 || this.state.windSpeedSure <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
                     arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr mocno szuszy skały']
@@ -100,7 +106,7 @@ export default class FormComponent extends Component {
 
             //current conditions
 
-            if ((this.state.precipIntencity + this.state.precipSureNorm + this.state.precipSureHard) >= 6) {
+            if ((this.state.precipIntensity + this.state.precipSureNorm + this.state.precipSureHard) >= 6) {
                 this.setState({
                     windSpeed: 0,
                     windSpeedSure: 0,
@@ -109,28 +115,108 @@ export default class FormComponent extends Component {
             }
 
             this.setState({
-                arayResult: [...this.state.arayResult, this.state.precipIntencity, this.state.precipSureNorm, this.state.precipSureHard, this.state.windSpeed, this.state.windSpeedSure, this.state.currTemp, this.state.currHum],
-                arrayDesc: [...this.state.arrayDesc, this.state.precipIntencityInfo, this.state.precipSureNormInfo, this.state.precipSureHardInfo, this.state.windSpeedInfo, this.state.windSpeedSureInfo, this.state.currTempInfo, this.state.currHumInfo]
+                arayResult: [...this.state.arayResult, this.state.precipIntensity, this.state.precipSureNorm, this.state.precipSureHard, this.state.windSpeed, this.state.windSpeedSure, this.state.currTemp, this.state.currHum],
+                arrayDesc: [...this.state.arrayDesc, this.state.precipIntensityInfo, this.state.precipSureNormInfo, this.state.precipSureHardInfo, this.state.windSpeedInfo, this.state.windSpeedSureInfo, this.state.currTempInfo, this.state.currHumInfo],
             });
 
             console.log('wyniki: ', this.state.arayResult)
             console.log('opisy: ', this.state.arrayDesc)
 
+            this.setState({
+                respNumber: this.state.arayResult.reduce((a, b) => {
+                    return a + b
+                }, 0)
+            });
+
+            console.log('liczba opisująca warun: ', this.state.respNumber)
+
+            if (this.state.respNumber >= 10) {
+                this.setState({
+                    condStatus: "BEZNADZIEJNY",
+                    condDesc: "Lepiej zostań i ładuj na panelu."
+                });
+            }
+
+            if (this.state.respNumber >= 4 && this.state.respNumber < 10) {
+                this.setState({
+                    condStatus: "KIEPSKI",
+                    condDesc: "Może rower albo kajaki?"
+                });
+            }
+
+            if (this.state.respNumber > 0 && this.state.respNumber < 4) {
+                this.setState({
+                    condStatus: "SŁABY",
+                    condDesc: "Może być ciężko ..."
+                });
+            }
+
+            if (this.state.respNumber >= -4 && this.state.respNumber <= 0) {
+                this.setState({
+                    condStatus: "DOBRY",
+                    condDesc: "Skóra będzie się zacierać"
+                });
+            }
+
+            if (this.state.respNumber >= -8 && this.state.respNumber < -4) {
+                this.setState({
+                    condStatus: "ŚWIETNY",
+                    condDesc: "Już spakowany? Nie zastanawiaj się długo, jedź!"
+                });
+            }
+
+            if (this.state.respNumber < -8) {
+                this.setState({
+                    condStatus: "REWELACYJNY",
+                    condDesc: "Ciśnij na projekt, teraz na bank puści!!!"
+                });
+            }
+
+            console.log('warun: ', this.state.condStatus)
+            console.log('opis warunu : ', this.state.condDesc)
+
+            this.liSetUp()
+            this.showResultForm()
+
         }, 1000);
+    }
+
+    liSetUp = () => {
+        const lis = this.state.arrayDesc.map((elem, index) => (
+            <li key={index}>{elem}</li>
+        ))
+        this.setState({
+            lis: lis
+        });
+    }
+
+
+    showResultForm = () => {
+        this.setState({
+            classWait: 'hidden',
+            classResponse: 'visible'
+        });
     }
 
     hideForm = () => {
         this.setState({
             class: 'hidden',
-            class1: 'visible'
+            classWait: 'visible'
         });
     }
 
     showForm = () => {
         this.setState({
             class: 'visible',
-            class1: 'hidden',
-            classError: 'hidden'
+            classWait: 'hidden',
+            classError: 'hidden',
+            classError2: 'hidden',
+            classResponse: 'hidden',
+            arayResult: [],
+            arrayDesc: [],
+            respNumber: 0,
+            condStatus: "",
+            condDesc: "",
         });
     }
 
@@ -164,7 +250,7 @@ export default class FormComponent extends Component {
         }).catch(err => {
             console.log(err)
             this.setState({
-                class1: 'hidden',
+                classWait: 'hidden',
                 classError: 'visible'
             });
         })
@@ -176,32 +262,36 @@ export default class FormComponent extends Component {
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
         fetch(url).then(r => r.json()).then(obj => {
             //console.log('dwa dni wcześniej', obj)
-            const precipIntencityArray = []
+            const precipIntensityArray = []
             for (let i = 0; i < 24; i++) {
-                if (obj.hourly.data[i].precipIntencity > 0.25) {
-                    precipIntencityArray.push(obj.hourly.data[i].precipIntencity)
+                if (obj.hourly.data[i].precipIntensity > 0.025) {
+                    precipIntensityArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica opadów, dwa dni wcześniej', precipIntencityArray)
-            if (precipIntencityArray.length === 0) {
+            console.log('tablica opadów, dwa dni wcześniej', precipIntensityArray)
+            if (precipIntensityArray.length === 0) {
                 this.setState({
-                    precipIntencityTwo: 0
+                    precipIntensityTwo: 0
                 })
             }
-            else if (precipIntencityArray.length > 0 && precipIntencityArray.length < 4) {
+            else if (precipIntensityArray.length > 0 && precipIntensityArray.length < 4) {
                 this.setState({
-                    precipIntencityTwo: 2
+                    precipIntensityTwo: 2
                 })
             }
             else {
                 this.setState({
-                    precipIntencityTwo: 4
+                    precipIntensityTwo: 4
                 })
             }
-            console.log('wartość dla opadów, dwa dni wcześniej', this.state.precipIntencityTwo)
+            console.log('wartość dla opadów, dwa dni wcześniej', this.state.precipIntensityTwo)
 
         }).catch(err => {
             console.log(err)
+            this.setState({
+                classWait: 'hidden',
+                classError2: 'visible'
+            });
         })
     }
 
@@ -211,29 +301,29 @@ export default class FormComponent extends Component {
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
         fetch(url).then(r => r.json()).then(obj => {
             //console.log('dzień wcześniej', obj)
-            const precipIntencityArray = []
+            const precipIntensityArray = []
             for (let i = 0; i < 24; i++) {
-                if (obj.hourly.data[i].precipIntencity > 0.25) {
-                    precipIntencityArray.push(obj.hourly.data[i].precipIntensity)
+                if (obj.hourly.data[i].precipIntensity > 0.015) {
+                    precipIntensityArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica opadów, dzień wcześniej', precipIntencityArray)
-            if (precipIntencityArray.length === 0) {
+            console.log('tablica opadów, dzień wcześniej', precipIntensityArray)
+            if (precipIntensityArray.length === 0) {
                 this.setState({
-                    precipIntencityOne: 0
+                    precipIntensityOne: 0
                 })
             }
-            else if (precipIntencityArray.length > 0 && precipIntencityArray.length < 4) {
+            else if (precipIntensityArray.length > 0 && precipIntensityArray.length < 4) {
                 this.setState({
-                    precipIntencityOne: 2
+                    precipIntensityOne: 2
                 })
             }
             else {
                 this.setState({
-                    precipIntencityOne: 4
+                    precipIntensityOne: 4
                 })
             }
-            console.log('wartość opadów', this.state.precipIntencityOne)
+            console.log('wartość opadów', this.state.precipIntensityOne)
 
             const windSpeedArray = []
             for (let i = 0; i < 24; i++) {
@@ -287,8 +377,14 @@ export default class FormComponent extends Component {
 
         }).catch(err => {
             console.log(err)
+            this.setState({
+                classWait: 'hidden',
+                classError2: 'visible'
+            });
         })
     }
+
+    debugger
 
     fetchWeather = event => {
         const searchDate = new Date(this.state.date)
@@ -298,38 +394,38 @@ export default class FormComponent extends Component {
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
         fetch(url).then(r => r.json()).then(obj => {
             console.log('dzisiaj', obj)
-            const precipIntencityArray = []
-            for (let i = 0; i < (hours + 1); i++) {
-                if (obj.hourly.data[i].precipIntencity > 0.25) {
-                    precipIntencityArray.push(obj.hourly.data[i].precipIntencity)
+            const precipIntensityArray = []
+            for (let i = 0; i < (hours); i++) {
+                if (obj.hourly.data[i].precipIntensity > 0.025) {
+                    precipIntensityArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica drobnych opadów, dzień sprawdzany', precipIntencityArray)
-            if (precipIntencityArray.length === 0) {
+            console.log('tablica drobnych opadów, dzień sprawdzany', precipIntensityArray)
+            if (precipIntensityArray.length === 0) {
                 this.setState({
-                    precipIntencity: 0,
-                    precipIntencityInfo: 'brak drobnych opadów',
+                    precipIntensity: 0,
+                    precipIntensityInfo: 'brak drobnych opadów',
                 })
             }
-            else if (precipIntencityArray.length > 0 && precipIntencityArray.length < 4) {
+            else if (precipIntensityArray.length > 0 && precipIntensityArray.length < 4) {
                 this.setState({
-                    precipIntencity: 2,
-                    precipIntencityInfo: 'przelotne drobne opady',
+                    precipIntensity: 2,
+                    precipIntensityInfo: 'przelotne drobne opady',
                 })
             }
             else {
                 this.setState({
-                    precipIntencity: 6,
-                    precipIntencityInfo: 'częste drobne opady',
+                    precipIntensity: 6,
+                    precipIntensityInfo: 'częste drobne opady',
                 })
             }
-            console.log('wartość drobnych opadów, dzień sprawdzany', this.state.precipIntencity, this.state.precipIntencityInfo)
+            console.log('wartość drobnych opadów, dzień sprawdzany', this.state.precipIntensity, this.state.precipIntensityInfo)
 
 
             const precipSureNormArray = []
-            for (let i = 0; i < (hours + 1); i++) {
-                if (obj.hourly.data[i].precipIntencity > 1 && obj.hourly.data[i].precipIntencity < 4) {
-                    precipSureNormArray.push(obj.hourly.data[i].precipIntencity)
+            for (let i = 0; i < (hours); i++) {
+                if (obj.hourly.data[i].precipIntensity >= 0.1 && obj.hourly.data[i].precipIntensity < 0.4) {
+                    precipSureNormArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
             console.log('tablica średnich opadów, dzień sprawdzany', precipSureNormArray)
@@ -355,8 +451,8 @@ export default class FormComponent extends Component {
 
             const precipSureHardArray = []
             for (let i = 0; i < (hours + 1); i++) {
-                if (obj.hourly.data[i].precipIntencity > 4) {
-                    precipSureHardArray.push(obj.hourly.data[i].precipIntencity)
+                if (obj.hourly.data[i].precipIntensity >= 0.4) {
+                    precipSureHardArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
             console.log('tablica mocnych opadów, dzień sprawdzany', precipSureHardArray)
@@ -390,22 +486,22 @@ export default class FormComponent extends Component {
             if (windSpeedArray.length === 0) {
                 this.setState({
                     windSpeed: 0,
-                    windSpeedSureInfo: "brak wiatru"
+                    windSpeedInfo: "brak wiatru"
                 })
             }
             else if (windSpeedArray.length > 0 && windSpeedArray.length < 4) {
                 this.setState({
                     windSpeed: -2,
-                    windSpeedSureInfo: "momentami wietrznie"
+                    windSpeedInfo: "momentami lekki wiatr"
                 })
             }
             else {
                 this.setState({
                     windSpeed: -4,
-                    windSpeedSureInfo: "wietrznie"
+                    windSpeedInfo: "wietrznie"
                 })
             }
-            console.log('wartość dla wiatru, dzień sprawdzany', this.state.windSpeed, this.state.windSpeedSureInfo)
+            console.log('wartość dla wiatru, dzień sprawdzany', this.state.windSpeed, this.state.windSpeedInfo)
 
             const windSpeedSureArray = []
             for (let i = 0; i < (hours + 1); i++) {
@@ -424,7 +520,7 @@ export default class FormComponent extends Component {
             else if (windSpeedSureArray.length > 0 && windSpeedSureArray.length < 4) {
                 this.setState({
                     windSpeedSure: -4,
-                    windSpeedSureInfo: "momentami bardzo wietrznie"
+                    windSpeedSureInfo: "momentami silny wiatr"
                 })
             }
             else {
@@ -532,6 +628,10 @@ export default class FormComponent extends Component {
 
         }).catch(err => {
             console.log(err)
+            this.setState({
+                classWait: 'hidden',
+                classError2: 'visible'
+            });
         })
     }
 
@@ -583,11 +683,11 @@ export default class FormComponent extends Component {
                         </div>
                     </nav>
                 </div>
-                <div className={this.state.class1}>
+                <div className={this.state.classWait}>
                     <nav className='formContainer'>
                         <div className='formList'>
                             <div className='form'>
-                                <p>tutaj</p>
+                                <p>Czekaj</p>
                             </div>
                         </div>
                     </nav>
@@ -606,7 +706,54 @@ export default class FormComponent extends Component {
                         </div>
                     </nav>
                 </div>
+                <div className={this.state.classError2}>
+                    <nav className='formContainer'>
+                        <div className='formList'>
+                            <div className='formErr'>
+                                <p className='blue'>Bardzo nam przykro. Wystąpił problem z pobraniem danych.</p>
+                                <p>{'Wróć za jakiś czas i spróbuj ponownie'}</p>
+                            </div>
+                            <button onClick={(e) => {
+                                this.showForm()
+                            }
+                            }>POWRÓT</button>
+                        </div>
+                    </nav>
+                </div>
+                <div className={this.state.classResponse}>
+                    <nav className='formContainer'>
+                        <div className='formList'>
+                            <div className='formErr'>
+                                <p>Prognozowany warun: <span className='blue'>{this.state.condStatus}</span></p>
+                                <p>{this.state.condDesc}</p>
+                            </div>
+                            <div className='formUl'>
+                                <ul>
+                                    {this.state.lis}
+                                </ul>
+                            </div>
+                            <button onClick={(e) => {
+                                this.showForm()
+                            }
+                            }>POWRÓT</button>
+                        </div>
+                    </nav>
+                </div>
             </div >
         );
     }
 }
+
+
+// When classified according to amount of precipitation, rain can be divided into:[1]
+
+// * very light rain &#8212; when the precipitation rate is < 0.25 mm/hour
+// * light rain &#8212; when the precipitation rate is between 0.25 mm/hour -
+// 1.0mm/hour
+// * moderate rain &#8212; when the precipitation rate is between 1.0 mm/hour -
+// 4.0mm/hour
+// * heavy rain &#8212; when the precipitation rate is between 4.0 mm/hour -
+// 16.0mm/hour
+// * very heavy rain &#8212; when the precipitation rate is between 16.0 mm/hour -
+// 50mm/hour
+// * extreme rain &#8212; when the precipitation rate is > 50.0 mm/hour
