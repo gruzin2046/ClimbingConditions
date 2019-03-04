@@ -10,10 +10,12 @@ export default class FormComponent extends Component {
             classError: 'hidden',
             classError2: 'hidden',
             classResponse: 'hidden',
-            place: 'Reykjavik',
-            date: '2019-03-01T12:00',
+            place: 'Jelenia Góra',
+            date: '2019-03-04T12:00',
+            temp: 14,
             cityLat: '',
             cityLon: '',
+
             precipIntensityTwo: '',
 
             precipIntensityOne: '',
@@ -217,6 +219,24 @@ export default class FormComponent extends Component {
             respNumber: 0,
             condStatus: "",
             condDesc: "",
+            temp: 14,
+            currTempInfo: '',
+            currTemp: ''
+        });
+    }
+
+    formCleaner = () => {
+        if (this.state.temp >= 0 && this.state.temp <= 9) {
+            const tempKonkat = "0" + this.state.temp
+            this.setState({
+                temp: tempKonkat
+            });
+        }
+    }
+
+    changeHandlerTemp = event => {
+        this.setState({
+            temp: event.target.value
         });
     }
 
@@ -232,14 +252,15 @@ export default class FormComponent extends Component {
         });
     }
 
+
     fetchLocation = event => {
         event.preventDefault()
         const url = 'https://graphhopper.com/api/1/geocode?key=1e78f6b4-82e6-4c73-8616-f415c4ee623d&q=' + this.state.place
         fetch(url).then(r => r.json()).then(obj => {
             //console.log(obj)
             this.setState({
-                cityLat: `${obj.hits[0].point.lat}`,
-                cityLon: `${obj.hits[0].point.lng}`,
+                cityLat: obj.hits[0].point.lat,
+                cityLon: obj.hits[0].point.lng,
             }, () => {
                 this.fetchPastWeatherTwoDayAgo(event)
                 this.fetchPastWeatherOneDayAgo(event)
@@ -256,7 +277,7 @@ export default class FormComponent extends Component {
         })
     }
 
-    fetchPastWeatherTwoDayAgo = event => {
+    fetchPastWeatherTwoDayAgo = () => {
         const searchDate = new Date(this.state.date)
         const searchDateNumber = Math.round(searchDate.getTime() / 1000) - 172800
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
@@ -268,7 +289,7 @@ export default class FormComponent extends Component {
                     precipIntensityArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica opadów, dwa dni wcześniej', precipIntensityArray)
+            //console.log('tablica opadów, dwa dni wcześniej', precipIntensityArray)
             if (precipIntensityArray.length === 0) {
                 this.setState({
                     precipIntensityTwo: 0
@@ -284,7 +305,7 @@ export default class FormComponent extends Component {
                     precipIntensityTwo: 4
                 })
             }
-            console.log('wartość dla opadów, dwa dni wcześniej', this.state.precipIntensityTwo)
+            // console.log('wartość dla opadów, dwa dni wcześniej', this.state.precipIntensityTwo)
 
         }).catch(err => {
             console.log(err)
@@ -295,7 +316,7 @@ export default class FormComponent extends Component {
         })
     }
 
-    fetchPastWeatherOneDayAgo = event => {
+    fetchPastWeatherOneDayAgo = () => {
         const searchDate = new Date(this.state.date)
         const searchDateNumber = Math.round(searchDate.getTime() / 1000) - 86400
         const url = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/fdc3afa63c316609cb321c3c33772d51/' + this.state.cityLat + ',' + this.state.cityLon + ',' + searchDateNumber
@@ -307,7 +328,7 @@ export default class FormComponent extends Component {
                     precipIntensityArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica opadów, dzień wcześniej', precipIntensityArray)
+            //console.log('tablica opadów, dzień wcześniej', precipIntensityArray)
             if (precipIntensityArray.length === 0) {
                 this.setState({
                     precipIntensityOne: 0
@@ -323,7 +344,7 @@ export default class FormComponent extends Component {
                     precipIntensityOne: 4
                 })
             }
-            console.log('wartość opadów', this.state.precipIntensityOne)
+            //console.log('wartość opadów', this.state.precipIntensityOne)
 
             const windSpeedArray = []
             for (let i = 0; i < 24; i++) {
@@ -331,7 +352,7 @@ export default class FormComponent extends Component {
                     windSpeedArray.push(obj.hourly.data[i].windSpeed)
                 }
             }
-            console.log('tablica wiatru, dzień wcześniej', windSpeedArray)
+            //console.log('tablica wiatru, dzień wcześniej', windSpeedArray)
             if (windSpeedArray.length === 0) {
                 this.setState({
                     windSpeedOne: 0
@@ -347,7 +368,7 @@ export default class FormComponent extends Component {
                     windSpeedOne: -4
                 })
             }
-            console.log('wartość dla wiatru, dzień wcześniej', this.state.windSpeedOne)
+            //console.log('wartość dla wiatru, dzień wcześniej', this.state.windSpeedOne)
 
             const windSpeedSureArray = []
             for (let i = 0; i < 24; i++) {
@@ -355,7 +376,7 @@ export default class FormComponent extends Component {
                     windSpeedSureArray.push(obj.hourly.data[i].windSpeed)
                 }
             }
-            console.log('tablica silnego wiatru, dzień wcześniej', windSpeedSureArray)
+            //console.log('tablica silnego wiatru, dzień wcześniej', windSpeedSureArray)
             if (windSpeedSureArray.length === 0) {
                 this.setState({
                     windSpeedSureOne: 0
@@ -371,7 +392,7 @@ export default class FormComponent extends Component {
                     windSpeedSureOne: -8
                 })
             }
-            console.log('wartość dla silnego wiatru, dzień wcześniej', this.state.windSpeedSureOne)
+            //console.log('wartość dla silnego wiatru, dzień wcześniej', this.state.windSpeedSureOne)
 
             this.conditionCalc();
 
@@ -384,9 +405,7 @@ export default class FormComponent extends Component {
         })
     }
 
-    debugger
-
-    fetchWeather = event => {
+    fetchWeather = () => {
         const searchDate = new Date(this.state.date)
         const searchDateNumber = Math.round(searchDate.getTime() / 1000)
         const hours = searchDate.getHours()
@@ -400,7 +419,7 @@ export default class FormComponent extends Component {
                     precipIntensityArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica drobnych opadów, dzień sprawdzany', precipIntensityArray)
+            //console.log('tablica drobnych opadów, dzień sprawdzany', precipIntensityArray)
             if (precipIntensityArray.length === 0) {
                 this.setState({
                     precipIntensity: 0,
@@ -419,7 +438,7 @@ export default class FormComponent extends Component {
                     precipIntensityInfo: 'częste drobne opady',
                 })
             }
-            console.log('wartość drobnych opadów, dzień sprawdzany', this.state.precipIntensity, this.state.precipIntensityInfo)
+            //console.log('wartość drobnych opadów, dzień sprawdzany', this.state.precipIntensity, this.state.precipIntensityInfo)
 
 
             const precipSureNormArray = []
@@ -428,7 +447,7 @@ export default class FormComponent extends Component {
                     precipSureNormArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica średnich opadów, dzień sprawdzany', precipSureNormArray)
+            //console.log('tablica średnich opadów, dzień sprawdzany', precipSureNormArray)
             if (precipSureNormArray.length === 0) {
                 this.setState({
                     precipSureNorm: 0,
@@ -447,7 +466,7 @@ export default class FormComponent extends Component {
                     precipSureNormInfo: 'częste średnie opady',
                 })
             }
-            console.log('wartość średnich opadów, dzień sprawdzany', this.state.precipSureNorm, this.state.precipSureNormInfo)
+            //console.log('wartość średnich opadów, dzień sprawdzany', this.state.precipSureNorm, this.state.precipSureNormInfo)
 
             const precipSureHardArray = []
             for (let i = 0; i < (hours + 1); i++) {
@@ -455,7 +474,7 @@ export default class FormComponent extends Component {
                     precipSureHardArray.push(obj.hourly.data[i].precipIntensity)
                 }
             }
-            console.log('tablica mocnych opadów, dzień sprawdzany', precipSureHardArray)
+            //console.log('tablica mocnych opadów, dzień sprawdzany', precipSureHardArray)
             if (precipSureNormArray.length === 0) {
                 this.setState({
                     precipSureHard: 0,
@@ -474,15 +493,15 @@ export default class FormComponent extends Component {
                     precipSureHardInfo: 'częste silne opady',
                 })
             }
-            console.log('wartość mocnych opadów, dzień sprawdzany', this.state.precipSureHard, this.state.precipSureHardInfo)
+            //console.log('wartość mocnych opadów, dzień sprawdzany', this.state.precipSureHard, this.state.precipSureHardInfo)
 
             const windSpeedArray = []
-            for (let i = 0; i < (hours + 1); i++) {
+            for (let i = 0; i < (hours); i++) {
                 if (obj.hourly.data[i].windSpeed > 12 && obj.hourly.data[i].windSpeed < 30) {
                     windSpeedArray.push(obj.hourly.data[i].windSpeed)
                 }
             }
-            console.log('tablica wiatru, dzień sprawdzany', windSpeedArray)
+            //console.log('tablica wiatru, dzień sprawdzany', windSpeedArray)
             if (windSpeedArray.length === 0) {
                 this.setState({
                     windSpeed: 0,
@@ -501,15 +520,15 @@ export default class FormComponent extends Component {
                     windSpeedInfo: "wietrznie"
                 })
             }
-            console.log('wartość dla wiatru, dzień sprawdzany', this.state.windSpeed, this.state.windSpeedInfo)
+            //console.log('wartość dla wiatru, dzień sprawdzany', this.state.windSpeed, this.state.windSpeedInfo)
 
             const windSpeedSureArray = []
-            for (let i = 0; i < (hours + 1); i++) {
+            for (let i = 0; i < (hours); i++) {
                 if (obj.hourly.data[i].windSpeed > 30) {
                     windSpeedSureArray.push(obj.hourly.data[i].windSpeed)
                 }
             }
-            console.log('tablica silnego wiatru, dzień sprawdzany', windSpeedSureArray)
+            //console.log('tablica silnego wiatru, dzień sprawdzany', windSpeedSureArray)
 
             if (windSpeedSureArray.length === 0) {
                 this.setState({
@@ -529,73 +548,135 @@ export default class FormComponent extends Component {
                     windSpeedSureInfo: "bardzo wietrznie"
                 })
             }
-            console.log('wartość dla silnego wiatru, dzień sprawdzany', this.state.windSpeedSure, this.state.windSpeedSureInfo)
 
-            ///temp
+            const currTempCelsius = ((obj.currently.temperature - 32) * (5 / 9)).toFixed(2);
 
-            if (obj.currently.temperature < 41) {
+            if (currTempCelsius <= this.state.temp - 5.5) {
                 this.setState({
-                    currTemp: 2,
-                    currTempInfo: "bardzo zimno (mniej niż 5 stopni)"
+                    currTemp: 8,
+                    currTempInfo: `okrutnie zimno: ${currTempCelsius}`,
                 })
             }
 
-            else if (obj.currently.temperature > 41 && obj.currently.temperature < 50) {
+            else if (currTempCelsius > this.state.temp - 5.5 && currTempCelsius <= this.state.temp - 4.5) {
                 this.setState({
-                    currTemp: 0,
-                    currTempInfo: "zimno (5 - 10 stopni)"
+                    currTemp: 6,
+                    currTempInfo: `strasznie zimno: ${currTempCelsius}`,
                 })
             }
 
-            else if (obj.currently.temperature > 50 && obj.currently.temperature < 53.6) {
-                this.setState({
-                    currTemp: -2,
-                    currTempInfo: "temperatura może być (10 - 12,5 stopni)"
-                })
-            }
-
-            else if (obj.currently.temperature > 53.6 && obj.currently.temperature < 57.2) {
-                this.setState({
-                    currTemp: -6,
-                    currTempInfo: "temperatura dobra (12,5 - 14 stopni)"
-                })
-            }
-
-            else if (obj.currently.temperature > 57.2 && obj.currently.temperature < 60.8) {
-                this.setState({
-                    currTemp: -10,
-                    currTempInfo: "temperatura idealna (14 - 16 stopni)"
-                })
-            }
-
-            else if (obj.currently.temperature > 60.8 && obj.currently.temperature < 62.6) {
-                this.setState({
-                    currTemp: -4,
-                    currTempInfo: "temperatura dobra (16 - 17,5 stopni)"
-                })
-            }
-
-            else if (obj.currently.temperature > 62.6 && obj.currently.temperature < 68) {
-                this.setState({
-                    currTemp: 0,
-                    currTempInfo: "temperatura może być (17,5 - 20 stopni)"
-                })
-            }
-
-            else if (obj.currently.temperature > 68 && obj.currently.temperature < 71.6) {
+            else if (currTempCelsius > this.state.temp - 4.5 && currTempCelsius <= this.state.temp - 3.5) {
                 this.setState({
                     currTemp: 4,
-                    currTempInfo: "ciepło (20 - 22,5 stopni)"
+                    currTempInfo: `zdecydowanie za zimno: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > this.state.temp - 3.5 && currTempCelsius <= this.state.temp - 2.5) {
+                this.setState({
+                    currTemp: 2,
+                    currTempInfo: `za zimno: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > this.state.temp - 2.5 && currTempCelsius <= this.state.temp - 2) {
+                this.setState({
+                    currTemp: 0,
+                    currTempInfo: `trochę za zimno: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > this.state.temp - 2 && currTempCelsius <= this.state.temp - 1.5) {
+                this.setState({
+                    currTemp: -2,
+                    currTempInfo: `odrobinę za zimno: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > this.state.temp - 1.5 && currTempCelsius <= this.state.temp - 1) {
+                this.setState({
+                    currTemp: -4,
+                    currTempInfo: `temperatura dobra :  ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > this.state.temp - 1 && currTempCelsius <= this.state.temp - 0.5) {
+                this.setState({
+                    currTemp: -6,
+                    currTempInfo: `temperatura prawie idealna: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > this.state.temp - 0.5 && currTempCelsius < this.state.temp) {
+                this.setState({
+                    currTemp: -8,
+                    currTempInfo: `temperatura idealna: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius > (this.state.temp) && currTempCelsius < Number(this.state.temp) + 0.5) {
+                this.setState({
+                    currTemp: -8,
+                    currTempInfo: `temperatura idealna: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 0.5 && currTempCelsius < Number(this.state.temp) + 1) {
+                this.setState({
+                    currTemp: -6,
+                    currTempInfo: `temperatura prawie idealna: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 1 && currTempCelsius < Number(this.state.temp) + 1.5) {
+                this.setState({
+                    currTemp: -4,
+                    currTempInfo: `temperatura dobra : ${currTempCelsius} 1`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 1.5 && currTempCelsius < Number(this.state.temp) + 2) {
+                this.setState({
+                    currTemp: -2,
+                    currTempInfo: `odrobinę za ciepło: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 2 && currTempCelsius < Number(this.state.temp) + 2.5) {
+                this.setState({
+                    currTemp: 0,
+                    currTempInfo: `trochę za ciepło: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 2.5 && currTempCelsius < Number(this.state.temp) + 3.5) {
+                this.setState({
+                    currTemp: 2,
+                    currTempInfo: `za ciepło: ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 3.5 && currTempCelsius < Number(this.state.temp) + 4.5) {
+                this.setState({
+                    currTemp: 4,
+                    currTempInfo: `stanowczo za ciepło:  ${currTempCelsius}`,
+                })
+            }
+
+            else if (currTempCelsius >= Number(this.state.temp) + 4.5 && currTempCelsius < Number(this.state.temp) + 5.5) {
+                this.setState({
+                    currTemp: 6,
+                    currTempInfo: `gorąco : ${currTempCelsius}`,
                 })
             }
 
             else {
                 this.setState({
-                    currTemp: 10,
-                    currTempInfo: "gorąco (więcej niż 22,5 stopni)"
+                    currTemp: 8,
+                    currTempInfo: `stanowczo za gorąco : ${currTempCelsius}`,
                 })
             }
-
+            console.log('this.state.temp', this.state.temp)
             console.log('temperatura:', this.state.currTemp)
             console.log('temperatura: opis', this.state.currTempInfo)
 
@@ -634,6 +715,8 @@ export default class FormComponent extends Component {
             });
         })
     }
+
+
 
     render() {
         //const now = new Date()
@@ -675,7 +758,20 @@ export default class FormComponent extends Component {
                                     onChange={this.changeHandlerDate}
                                 />
                             </form>
+                            <form className='form'>
+                                <div>temperatura</div>
+                                <input
+                                    className="inp"
+                                    type="number"
+                                    value={this.state.temp}
+                                    name="temp"
+                                    onChange={this.changeHandlerTemp}
+                                    min={-15}
+                                    max={25}
+                                />
+                            </form>
                             <button onClick={(e) => {
+                                this.formCleaner()
                                 this.fetchLocation(e)
                                 this.hideForm()
                             }
