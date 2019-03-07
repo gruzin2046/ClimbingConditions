@@ -1,18 +1,8 @@
-.all {
-    height: 100vh;
-    background-color: black;
-    display: flex;
-    flex-direction: column;
-    align-content: space-between
-}
+ .back {
+     z-index: 1;
+     /* background-image: url('./../images/'); */
+ }
 
-.foot {
-    font-size: 40px;
-    width: 750px;
-    color: white;
-    background-color: black;
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    padding: 10px 0;
-}
+ .all {
+     z-index: 2;
+ }

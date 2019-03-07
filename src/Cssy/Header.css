@@ -9,23 +9,19 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    background: black;
 }
 
 .header {
     width: 1200px;
-    font-size: 100px;
+    font-size: 30px;
     display: flex;
 
 }
 
 #logo {
-    background-color: black;
-    width: 750px;
-    color: white;
+    width: 1200px;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-content: center;
     text-align: center;
 }

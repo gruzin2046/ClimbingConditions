@@ -8,7 +8,6 @@
 .formContainer {
     display: flex;
     justify-content: center;
-    background: white;
 }
 
 .formList {
