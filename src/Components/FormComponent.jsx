@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 import './../Cssy/Form.css';
 
-const buttonStyles = { transition: 'all 2s linear ' }
+
+// const buttonStyles = { transition: 'all 3s linear ' }
 
 export default class FormComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            wait: "czekaj",
             class: 'visible',
             classWait: 'hidden',
             classError: 'hidden',
             classError2: 'hidden',
             classResponse: 'hidden',
-            place: 'Jelenia Góra',
-            date: '2019-03-04T12:00',
-            temp: 14,
+            place: '',
+            date: new Date().toISOString().substr(0, 16),
+            maxDate: new Date(new Date().getTime() + (4 * 24 * 60 * 60 * 1000)).toISOString().substr(0, 16),
+            temp: "14",
             cityLat: '',
             cityLon: '',
 
@@ -47,15 +50,10 @@ export default class FormComponent extends Component {
             lis: "",
 
             buttonBackgroundColor: "white",
-            buttonOpacity: 1,
+            // buttonOpacity: 1,
         }
     }
 
-    componentDidMount() {
-        this.setState({
-            buttonOpacity: 0.6
-        });
-    }
 
     conditionCalc = () => {
 
@@ -153,7 +151,7 @@ export default class FormComponent extends Component {
             if (this.state.respNumber >= 4 && this.state.respNumber < 10) {
                 this.setState({
                     condStatus: "KIEPSKI",
-                    condDesc: "Może rower albo kajaki?"
+                    condDesc: "Poczekaj na lepszy dzień"
                 });
             }
 
@@ -203,6 +201,21 @@ export default class FormComponent extends Component {
         });
     }
 
+    waitAnim = () => {
+        setInterval(() => {
+            if (this.state.wait.length > 11) {
+                this.setState({
+                    wait: "czekaj"
+                });
+            }
+            else {
+                this.setState({
+                    wait: this.state.wait + '.'
+                });
+            }
+        }, 500);
+    }
+
 
     showResultForm = () => {
         this.setState({
@@ -233,6 +246,7 @@ export default class FormComponent extends Component {
             temp: 14,
             currTempInfo: '',
             currTemp: '',
+            wait: "czekaj",
         });
     }
 
@@ -528,7 +542,7 @@ export default class FormComponent extends Component {
             else {
                 this.setState({
                     windSpeed: -4,
-                    windSpeedInfo: "wietrznie"
+                    windSpeedInfo: "lekki wiatr"
                 })
             }
             //console.log('wartość dla wiatru, dzień sprawdzany', this.state.windSpeed, this.state.windSpeedInfo)
@@ -565,126 +579,126 @@ export default class FormComponent extends Component {
             if (currTempCelsius <= this.state.temp - 5.5) {
                 this.setState({
                     currTemp: 8,
-                    currTempInfo: `okrutnie zimno: ${currTempCelsius}`,
+                    currTempInfo: `okrutnie zimno: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 5.5 && currTempCelsius <= this.state.temp - 4.5) {
                 this.setState({
                     currTemp: 6,
-                    currTempInfo: `strasznie zimno: ${currTempCelsius}`,
+                    currTempInfo: `strasznie zimno: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 4.5 && currTempCelsius <= this.state.temp - 3.5) {
                 this.setState({
                     currTemp: 4,
-                    currTempInfo: `zdecydowanie za zimno: ${currTempCelsius}`,
+                    currTempInfo: `zdecydowanie za zimno: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 3.5 && currTempCelsius <= this.state.temp - 2.5) {
                 this.setState({
                     currTemp: 2,
-                    currTempInfo: `za zimno: ${currTempCelsius}`,
+                    currTempInfo: `za zimno: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 2.5 && currTempCelsius <= this.state.temp - 2) {
                 this.setState({
                     currTemp: 0,
-                    currTempInfo: `trochę za zimno: ${currTempCelsius}`,
+                    currTempInfo: `trochę za zimno: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 2 && currTempCelsius <= this.state.temp - 1.5) {
                 this.setState({
                     currTemp: -2,
-                    currTempInfo: `odrobinę za zimno: ${currTempCelsius}`,
+                    currTempInfo: `odrobinę za zimno: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 1.5 && currTempCelsius <= this.state.temp - 1) {
                 this.setState({
                     currTemp: -4,
-                    currTempInfo: `temperatura dobra :  ${currTempCelsius}`,
+                    currTempInfo: `temperatura dobra :  ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 1 && currTempCelsius <= this.state.temp - 0.5) {
                 this.setState({
                     currTemp: -6,
-                    currTempInfo: `temperatura prawie idealna: ${currTempCelsius}`,
+                    currTempInfo: `temperatura prawie idealna: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > this.state.temp - 0.5 && currTempCelsius < this.state.temp) {
                 this.setState({
                     currTemp: -8,
-                    currTempInfo: `temperatura idealna: ${currTempCelsius}`,
+                    currTempInfo: `temperatura idealna: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius > (this.state.temp) && currTempCelsius < Number(this.state.temp) + 0.5) {
                 this.setState({
                     currTemp: -8,
-                    currTempInfo: `temperatura idealna: ${currTempCelsius}`,
+                    currTempInfo: `temperatura idealna: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 0.5 && currTempCelsius < Number(this.state.temp) + 1) {
                 this.setState({
                     currTemp: -6,
-                    currTempInfo: `temperatura prawie idealna: ${currTempCelsius}`,
+                    currTempInfo: `temperatura prawie idealna: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 1 && currTempCelsius < Number(this.state.temp) + 1.5) {
                 this.setState({
                     currTemp: -4,
-                    currTempInfo: `temperatura dobra : ${currTempCelsius} 1`,
+                    currTempInfo: `temperatura dobra : ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 1.5 && currTempCelsius < Number(this.state.temp) + 2) {
                 this.setState({
                     currTemp: -2,
-                    currTempInfo: `odrobinę za ciepło: ${currTempCelsius}`,
+                    currTempInfo: `odrobinę za ciepło: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 2 && currTempCelsius < Number(this.state.temp) + 2.5) {
                 this.setState({
                     currTemp: 0,
-                    currTempInfo: `trochę za ciepło: ${currTempCelsius}`,
+                    currTempInfo: `trochę za ciepło: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 2.5 && currTempCelsius < Number(this.state.temp) + 3.5) {
                 this.setState({
                     currTemp: 2,
-                    currTempInfo: `za ciepło: ${currTempCelsius}`,
+                    currTempInfo: `za ciepło: ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 3.5 && currTempCelsius < Number(this.state.temp) + 4.5) {
                 this.setState({
                     currTemp: 4,
-                    currTempInfo: `stanowczo za ciepło:  ${currTempCelsius}`,
+                    currTempInfo: `stanowczo za ciepło:  ${currTempCelsius} °C`,
                 })
             }
 
             else if (currTempCelsius >= Number(this.state.temp) + 4.5 && currTempCelsius < Number(this.state.temp) + 5.5) {
                 this.setState({
                     currTemp: 6,
-                    currTempInfo: `gorąco : ${currTempCelsius}`,
+                    currTempInfo: `gorąco : ${currTempCelsius} °C`,
                 })
             }
 
             else {
                 this.setState({
                     currTemp: 8,
-                    currTempInfo: `stanowczo za gorąco : ${currTempCelsius}`,
+                    currTempInfo: `stanowczo za gorąco : ${currTempCelsius} °C`,
                 })
             }
             console.log('this.state.temp', this.state.temp)
@@ -730,17 +744,6 @@ export default class FormComponent extends Component {
 
 
     render() {
-        //const now = new Date()
-        // const year = now.getFullYear()
-        // console.log(year)
-        // const month = now.getMonth()
-        // const day = now.getDate()
-        // const hour = now.getHours()
-        // const minute = now.getMinutes()
-        // const combineTime = `${year}-${month}-${day}-${hour}-${minute}`
-        // console.log(now)
-
-
         return (
             <div>
                 <div className={this.state.class}>
@@ -763,16 +766,16 @@ export default class FormComponent extends Component {
                                     className="inp"
                                     type="datetime-local"
                                     value={this.state.date}
-                                    // min="2019-02-25T00:00"
-                                    // max="2019-02-28T00:00"
+                                    min={this.state.date}
+                                    max={this.state.maxDate}
                                     name="date"
                                     onChange={this.changeHandlerDate}
                                 />
                             </form>
-                            <form className='form'>
-                                <div>temperatura</div>
+                            <form className='formTemp'>
+                                <div>preferowana temperatura:</div>
                                 <input
-                                    className="inp"
+                                    className="shortInp"
                                     type="number"
                                     value={this.state.temp}
                                     name="temp"
@@ -780,13 +783,17 @@ export default class FormComponent extends Component {
                                     min={-15}
                                     max={25}
                                 />
+                                <div>°C</div>
                             </form>
-                            <button style={{ ...buttonStyles, opacity: this.state.opacity }} onClick={(e) => {
-                                this.formCleaner()
-                                this.fetchLocation(e)
-                                this.hideForm()
-                            }
-                            }><p>SPRAWDŹ!</p></button>
+                            <button
+                                //style={{ ...buttonStyles, opacity: this.state.buttonOpacity }}
+                                onClick={(e) => {
+                                    this.waitAnim()
+                                    this.formCleaner()
+                                    this.fetchLocation(e)
+                                    this.hideForm()
+                                }
+                                }><p>SPRAWDŹ!</p></button>
                         </div>
                     </nav>
                 </div>
@@ -794,7 +801,7 @@ export default class FormComponent extends Component {
                     <nav className='formContainer'>
                         <div className='formList'>
                             <div className='form'>
-                                <p>Czekaj</p>
+                                <p>{this.state.wait}</p>
                             </div>
                         </div>
                     </nav>
@@ -804,7 +811,7 @@ export default class FormComponent extends Component {
                         <div className='formList'>
                             <div className='formErr'>
                                 <p className='blue'>Twoje zapytanie nie jest prawidłowe.</p>
-                                <p>{'Jeśli nie umiesz pisać lub (co gorsza) nie myślisz - wróć do szkoły.'}</p>
+                                <p>{'Sprawdź, czy wszystkie wymagane pola są poprawnie wypełnione.'}</p>
                             </div>
                             <button onClick={(e) => {
                                 this.showForm()
