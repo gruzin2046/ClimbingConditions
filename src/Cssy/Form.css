@@ -20,16 +20,17 @@
     font-size: 40px;
     width: 750px;
     color: white;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: space-around;
     text-align: center;
     padding: 10px 0;
 }
 
+
+
 .inp {
     width: 550px;
-    font-family: 'Roboto', sans-serif;
     font-size: 35px;
 }
 
@@ -38,11 +39,16 @@
     font-size: 40px;
     width: 750px;
     color: #748ED2;
-    background-color: black;
+    background-color: rgba(255, 255, 255, 0.8);
     display: flex;
     justify-content: space-around;
     text-align: center;
     padding: 10px 0;
+}
+
+.bounce-top {
+    -webkit-animation: bounce-top 0.9s forwards;
+    animation: bounce-top 0.9s forwards;
 }
 
 .visible {

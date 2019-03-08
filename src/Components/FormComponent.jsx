@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import './../Cssy/Form.css';
 
+const buttonStyles = { transition: 'all 2s linear ' }
+
 export default class FormComponent extends Component {
     constructor(props) {
         super(props);
@@ -42,8 +44,17 @@ export default class FormComponent extends Component {
             respNumber: 0,
             condStatus: "",
             condDesc: "",
-            lis: ""
+            lis: "",
+
+            buttonBackgroundColor: "white",
+            buttonOpacity: 1,
         }
+    }
+
+    componentDidMount() {
+        this.setState({
+            buttonOpacity: 0.6
+        });
     }
 
     conditionCalc = () => {
@@ -81,28 +92,28 @@ export default class FormComponent extends Component {
             if (this.state.precipIntensityTwo >= 2 && this.state.precipIntensityOne === 0 && (this.state.windSpeedOne <= -2 || this.state.windSpeedSureOne <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
-                    arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej wiatr szuszył skały']
+                    arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej brak opadów i wiatr']
                 });
             }
 
             if (this.state.precipIntensityTwo >= 2 && this.state.precipIntensityOne === 0 && (this.state.windSpeedOne <= -4 || this.state.windSpeedSureOne <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
-                    arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej wiatr mocno szuszył skały']
+                    arrayDesc: [...this.state.arrayDesc, 'dzień wcześniej brak opadów i silny wiatr']
                 });
             }
 
             if (this.state.precipIntensityOne >= 2 && (this.state.windSpeed <= -2 || this.state.windSpeedSure <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
-                    arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr szuszy skały']
+                    arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr']
                 });
             }
 
             if (this.state.precipIntensityOne >= 2 && (this.state.windSpeed === -4 || this.state.windSpeedSure <= -4)) {
                 this.setState({
                     arayResult: [...this.state.arayResult, -2],
-                    arrayDesc: [...this.state.arrayDesc, 'po deszczu wiatr mocno szuszy skały']
+                    arrayDesc: [...this.state.arrayDesc, 'po deszczu mocny wiatr']
                 });
             }
 
@@ -221,7 +232,7 @@ export default class FormComponent extends Component {
             condDesc: "",
             temp: 14,
             currTempInfo: '',
-            currTemp: ''
+            currTemp: '',
         });
     }
 
@@ -770,12 +781,12 @@ export default class FormComponent extends Component {
                                     max={25}
                                 />
                             </form>
-                            <button onClick={(e) => {
+                            <button style={{ ...buttonStyles, opacity: this.state.opacity }} onClick={(e) => {
                                 this.formCleaner()
                                 this.fetchLocation(e)
                                 this.hideForm()
                             }
-                            }>SPRAWDŹ!</button>
+                            }><p>SPRAWDŹ!</p></button>
                         </div>
                     </nav>
                 </div>

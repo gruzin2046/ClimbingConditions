@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './../Cssy/App.css';
-import Header from "./Header.jsx"
+//import Header from "./Header.jsx"
 import Main from "./Main.jsx"
 import FormComponent from "./FormComponent";
 
@@ -13,8 +13,6 @@ import Background6 from './../images/StockSnap_VH7WM9GNWA.jpg';
 import Background7 from './../images/StockSnap_5NU3A9BR97.jpg';
 import Background8 from './../images/StockSnap_5NU3A9BR98.jpg';
 
-
-/////////////////
 
 const backgroundChange = [
   { background: `url(${Background1})` },
@@ -64,14 +62,15 @@ class App extends Component {
       backgroundImage: slider.background,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
-      position: 'relative',
       height: '100vh',
-      zIndex: '-1',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
     };
     return (
       <div className='all'>
         <div style={sectionBackground}>
-          <Header></Header>
           <Main></Main>
           <FormComponent></FormComponent>
         </div>

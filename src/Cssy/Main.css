@@ -8,13 +8,13 @@
 .mainContainer {
     display: flex;
     justify-content: center;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .main {
     font-size: 30px;
     width: 750px;
     color: black;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -25,4 +25,9 @@
 
 .main span {
     color: #748ED2;
+}
+
+
+#logo {
+    font-size: 60px;
 }
