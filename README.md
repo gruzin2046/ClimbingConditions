@@ -19,5 +19,5 @@ Project use API request (fetch method) to get:
 * location coordinates : https://graphhopper.com
 * wether forecast: https://darksky.net
 
-<img src='/src/images/sample.png'>
-<img src='/src/images/sample2.png'>
+<img src="/src/images/sample.png">
+<img src="/src/images/sample2.png">
