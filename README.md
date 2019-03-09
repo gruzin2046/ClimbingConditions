@@ -19,6 +19,9 @@ Project use API request (fetch method) to get:
 * location coordinates : https://graphhopper.com
 * wether forecast: https://darksky.net
 
+![sample](https://user-images.githubusercontent.com/46245067/54063598-a6aeea80-420d-11e9-93b9-bc07771d6d14.PNG)
+![sample2](https://user-images.githubusercontent.com/46245067/54063627-de1d9700-420d-11e9-9650-898f86cf6eee.PNG)
+
 ![](/src/images/sample.png)
 ![](/src/images/sample2.png)
 
