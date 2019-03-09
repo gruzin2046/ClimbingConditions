@@ -22,3 +22,4 @@ Project use API request (fetch method) to get:
 ![](/src/images/sample.png)
 ![](/src/images/sample2.png)
 
+
