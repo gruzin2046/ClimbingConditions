@@ -1,20 +1,20 @@
 .footerConatiner {
     display: flex;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1);
     width: 100%;
     font-size: 20px;
 }
 
 .footer {
+    width: 750px;
     color: black;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     text-align: center;
     padding: 10px 0;
 }
 
-span {
+.blue {
     color: #748ED2;
 }
