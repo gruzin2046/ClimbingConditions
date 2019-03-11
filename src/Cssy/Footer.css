@@ -18,3 +18,19 @@
 .blue {
     color: #748ED2;
 }
+
+@media screen and (max-width: 340px) {
+    .footer {
+        width: 300px;
+        font-size: 10px;
+        flex-direction: column;
+    }
+}
+
+@media screen and (min-width: 341px) and (max-width: 768px) {
+    .footer {
+        width: 340px;
+        font-size: 15px;
+        flex-direction: column;
+    }
+}

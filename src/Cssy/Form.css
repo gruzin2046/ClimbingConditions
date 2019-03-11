@@ -98,3 +98,47 @@ button:hover {
     justify-content: space-around;
     padding: 10px 0;
 }
+
+@media screen and (max-width: 340px) {
+
+    .form,
+    .formTemp,
+    .formErr,
+    .formList button,
+    .formUl {
+        font-size: 15px;
+        width: 300px;
+    }
+
+    .inp {
+        width: 200px;
+        font-size: 15px;
+    }
+
+    .shortInp {
+        width: 50px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (min-width: 341px) and (max-width: 768px) {
+
+    .form,
+    .formTemp,
+    .formErr,
+    .formList button,
+    .formUl {
+        font-size: 18px;
+        width: 340px;
+    }
+
+    .inp {
+        width: 250px;
+        font-size: 18px;
+    }
+
+    .shortInp {
+        width: 50px;
+        font-size: 18px;
+    }
+}

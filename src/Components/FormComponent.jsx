@@ -757,7 +757,7 @@ export default class FormComponent extends Component {
                                     name="place"
                                     value={this.state.place}
                                     onChange={this.changeHandlerPlace}
-                                    placeholder='nazwa najbliższej miejscowości'
+                                    placeholder='najbliższa miejscowość'
                                 />
                             </form>
                             <form className='form'>
