@@ -6,7 +6,7 @@
 ## General info
 CLIMBING CONDITIONS is an app dedicated for rock climbers.
 It show You predictable conditions based on indicated place, date and preffered temperature.
-Perfect conditions are one of the most important factor in extreme hard climbing, so this can be a helpfull tool for anyone who is planning to climb a maximum grade.Try it by yourselve: https://gruzin2046.github.io/ClimbingConditions/
+Perfect conditions are one of the most important factor in extreme hard climbing, so this can be a helpful tool for anyone who is planning to climb a maximum grade. Try it by yourself: https://gruzin2046.github.io/ClimbingConditions/
 
 ## Technologies
 Project is created with:
