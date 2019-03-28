@@ -4,7 +4,7 @@ import FormComponent from "./FormComponent";
 import Footer from "./Footer";
 
 import Background1 from './../images/StockSnap_XM8EM3JBYR.jpg';
-import Background2 from './../images/StockSnap_CETLCQ8FDR.jpg';
+import Background2 from './../images/StockSnap_CETLCQ8FDR7.jpg';
 import Background3 from './../images/StockSnap_DCHQPNB939.jpg';
 import Background4 from './../images/StockSnap_H3BKHKHAQ8.jpg';
 import Background5 from './../images/StockSnap_JSMS7R8B43.jpg';
